@@ -1,6 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
+import '../domain/models/resource.dart';
+
 class RestClient {
   final _dio = Dio();
   final _connectivity = Connectivity();
@@ -21,8 +23,45 @@ class RestClient {
     return connectivityResult != ConnectivityResult.none;
   }
 
+  Future<Resource<T>> get<T>(String endpointOrUrl,
+      {Map<String, dynamic>? queryParams}) async {
+    if (!await _isConnected()) {
+      return Resource.noConnection('No Internet connection');
+    }
+
+    try {
+      final response = await _dio.get<T>(
+        _getFullUrl(endpointOrUrl),
+        queryParameters: queryParams,
+      );
+      return Resource.success(response.data as T);
+    } on DioException catch (e) {
+      return Resource.httpError(_handleError(e));
+    } catch (e) {
+      return Resource.unknownError('Unexpected error: $e');
+    }
+  }
+
+  Future<Resource<T>> post<T>(String endpointOrUrl,
+      {Map<String, dynamic>? data}) async {
+    if (!await _isConnected()) {
+      return Resource.noConnection('No Internet connection');
+    }
+
+    try {
+      final response = await _dio.post<T>(
+        _getFullUrl(endpointOrUrl),
+        data: data,
+      );
+      return Resource.success(response.data as T);
+    } on DioException catch (e) {
+      return Resource.httpError(_handleError(e));
+    } catch (e) {
+      return Resource.unknownError('Unexpected error: $e');
+    }
+  }
+
   String _getFullUrl(String endpointOrUrl) {
-    // Check if the provided endpointOrUrl is a full URL or just an endpoint
     if (endpointOrUrl.startsWith('http://') ||
         endpointOrUrl.startsWith('https://')) {
       return endpointOrUrl;
@@ -31,9 +70,9 @@ class RestClient {
     }
   }
 
-  dynamic _handleError(DioException e) {
+  String _handleError(DioException e) {
     switch (e.type) {
-      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.connectionTimeout:
         return 'Connection timeout';
       case DioExceptionType.sendTimeout:
         return 'Send timeout';
@@ -47,25 +86,6 @@ class RestClient {
         return 'Connection failed due to internet issues';
       default:
         return 'Something went wrong';
-    }
-  }
-
-  Future<dynamic> get(String endpointOrUrl,
-      {Map<String, dynamic>? queryParams}) async {
-    if (!await _isConnected()) {
-      throw Exception('No Internet connection');
-    }
-
-    try {
-      final response = await _dio.get(
-        _getFullUrl(endpointOrUrl),
-        queryParameters: queryParams,
-      );
-      return response.data;
-    } on DioException catch (e) {
-      return _handleError(e);
-    } catch (e) {
-      return 'Unexpected error: $e';
     }
   }
 }
