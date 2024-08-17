@@ -1,7 +1,7 @@
 class Weather {
   Weather({
     Coord? coord,
-    List<Weather>? weather,
+    List<WeatherData>? weather,
     String? base,
     Main? main,
     int? visibility,
@@ -34,7 +34,7 @@ class Weather {
     if (json['weather'] != null) {
       _weather = [];
       json['weather'].forEach((v) {
-        _weather?.add(Weather.fromJson(v));
+        _weather?.add(WeatherData.fromJson(v));
       });
     }
     _base = json['base'];
@@ -49,9 +49,8 @@ class Weather {
     _name = json['name'];
     _cod = json['cod'];
   }
-
   Coord? _coord;
-  List<Weather>? _weather;
+  List<WeatherData>? _weather;
   String? _base;
   Main? _main;
   int? _visibility;
@@ -66,7 +65,7 @@ class Weather {
 
   Weather copyWith({
     Coord? coord,
-    List<Weather>? weather,
+    List<WeatherData>? weather,
     String? base,
     Main? main,
     int? visibility,
@@ -94,31 +93,19 @@ class Weather {
         name: name ?? _name,
         cod: cod ?? _cod,
       );
-
   Coord? get coord => _coord;
 
-  List<Weather>? get weather => _weather;
-
+  List<WeatherData>? get weather => _weather;
   String? get base => _base;
-
   Main? get main => _main;
-
   int? get visibility => _visibility;
-
   Wind? get wind => _wind;
-
   Clouds? get clouds => _clouds;
-
   int? get dt => _dt;
-
   Sys? get sys => _sys;
-
   int? get timezone => _timezone;
-
   int? get id => _id;
-
   String? get name => _name;
-
   int? get cod => _cod;
 
   Map<String, dynamic> toJson() {
@@ -168,7 +155,6 @@ class Sys {
     _sunrise = json['sunrise'];
     _sunset = json['sunset'];
   }
-
   String? _country;
   int? _sunrise;
   int? _sunset;
@@ -183,11 +169,8 @@ class Sys {
         sunrise: sunrise ?? _sunrise,
         sunset: sunset ?? _sunset,
       );
-
   String? get country => _country;
-
   int? get sunrise => _sunrise;
-
   int? get sunset => _sunset;
 
   Map<String, dynamic> toJson() {
@@ -209,7 +192,6 @@ class Clouds {
   Clouds.fromJson(dynamic json) {
     _all = json['all'];
   }
-
   int? _all;
 
   Clouds copyWith({
@@ -218,7 +200,6 @@ class Clouds {
       Clouds(
         all: all ?? _all,
       );
-
   int? get all => _all;
 
   Map<String, dynamic> toJson() {
@@ -244,7 +225,6 @@ class Wind {
     _deg = json['deg'];
     _gust = json['gust'];
   }
-
   double? _speed;
   int? _deg;
   double? _gust;
@@ -259,11 +239,8 @@ class Wind {
         deg: deg ?? _deg,
         gust: gust ?? _gust,
       );
-
   double? get speed => _speed;
-
   int? get deg => _deg;
-
   double? get gust => _gust;
 
   Map<String, dynamic> toJson() {
@@ -306,7 +283,6 @@ class Main {
     _seaLevel = json['sea_level'];
     _grndLevel = json['grnd_level'];
   }
-
   double? _temp;
   double? _feelsLike;
   double? _tempMin;
@@ -336,21 +312,13 @@ class Main {
         seaLevel: seaLevel ?? _seaLevel,
         grndLevel: grndLevel ?? _grndLevel,
       );
-
   double? get temp => _temp;
-
   double? get feelsLike => _feelsLike;
-
   double? get tempMin => _tempMin;
-
   double? get tempMax => _tempMax;
-
   int? get pressure => _pressure;
-
   int? get humidity => _humidity;
-
   int? get seaLevel => _seaLevel;
-
   int? get grndLevel => _grndLevel;
 
   Map<String, dynamic> toJson() {
@@ -363,6 +331,62 @@ class Main {
     map['humidity'] = _humidity;
     map['sea_level'] = _seaLevel;
     map['grnd_level'] = _grndLevel;
+    return map;
+  }
+}
+
+class WeatherData {
+  WeatherData({
+    int? id,
+    String? main,
+    String? description,
+    String? icon,
+  }) {
+    _id = id;
+    _main = main;
+    _description = description;
+    _icon = icon;
+  }
+
+  WeatherData.fromJson(dynamic json) {
+    _id = json['id'];
+    _main = json['main'];
+    _description = json['description'];
+    _icon = json['icon'];
+  }
+
+  int? _id;
+  String? _main;
+  String? _description;
+  String? _icon;
+
+  WeatherData copyWith({
+    int? id,
+    String? main,
+    String? description,
+    String? icon,
+  }) =>
+      WeatherData(
+        id: id ?? _id,
+        main: main ?? _main,
+        description: description ?? _description,
+        icon: icon ?? _icon,
+      );
+
+  int? get id => _id;
+
+  String? get main => _main;
+
+  String? get description => _description;
+
+  String? get icon => _icon;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['id'] = _id;
+    map['main'] = _main;
+    map['description'] = _description;
+    map['icon'] = _icon;
     return map;
   }
 }
@@ -380,7 +404,6 @@ class Coord {
     _lon = json['lon'];
     _lat = json['lat'];
   }
-
   double? _lon;
   double? _lat;
 
@@ -392,9 +415,7 @@ class Coord {
         lon: lon ?? _lon,
         lat: lat ?? _lat,
       );
-
   double? get lon => _lon;
-
   double? get lat => _lat;
 
   Map<String, dynamic> toJson() {

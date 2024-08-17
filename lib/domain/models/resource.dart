@@ -1,4 +1,5 @@
 enum Status {
+  initial,
   success,
   noConnection,
   httpError,
@@ -11,6 +12,10 @@ class Resource<T> {
   final String? message;
 
   Resource._({required this.status, this.data, this.message});
+
+  factory Resource.initial() {
+    return Resource._(status: Status.initial);
+  }
 
   factory Resource.success(T data) {
     return Resource._(status: Status.success, data: data);

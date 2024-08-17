@@ -16,11 +16,15 @@ class WeatherRepositoryImpl extends WeatherRepository {
 
   @override
   Future<Resource<Weather>> getWeatherByCityName(String city) async {
-    final response = await restClient.get("/weather", queryParams: {
-      "q": city,
-      "units": "metric",
-      "appid": ""
-    });
-    return response as Resource<Weather>;
+    final response = await restClient.get<Weather>(
+      "/weather",
+      Weather.fromJson,
+      queryParams: {
+        "q": city,
+        "units": "metric",
+        "appid": "3cab920f08c583f46619881febca9f2a"
+      },
+    );
+    return response;
   }
 }

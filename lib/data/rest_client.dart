@@ -13,6 +13,8 @@ class RestClient {
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
     _dio.options.headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET",
       'Content-Type': 'application/json',
       // Add other headers if needed
     };
@@ -23,18 +25,18 @@ class RestClient {
     return connectivityResult != ConnectivityResult.none;
   }
 
-  Future<Resource<T>> get<T>(String endpointOrUrl,
+  Future<Resource<T>> get<T>(String endpointOrUrl, T Function(dynamic) fromJson,
       {Map<String, dynamic>? queryParams}) async {
     if (!await _isConnected()) {
       return Resource.noConnection('No Internet connection');
     }
-
+    final url = _getFullUrl(endpointOrUrl);
     try {
-      final response = await _dio.get<T>(
-        _getFullUrl(endpointOrUrl),
+      final response = await _dio.get(
+        url,
         queryParameters: queryParams,
       );
-      return Resource.success(response.data as T);
+      return Resource.success(fromJson(response.data));
     } on DioException catch (e) {
       return Resource.httpError(_handleError(e));
     } catch (e) {
