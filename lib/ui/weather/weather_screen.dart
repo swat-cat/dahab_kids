@@ -1,4 +1,5 @@
 import 'package:dahab_kids/domain/models/resource.dart';
+import 'package:dahab_kids/extrensions/string_extensions.dart';
 import 'package:dahab_kids/ui/weather/weather_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,77 @@ class WeatherScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 if (viewModel.weather.status == Status.success)
-                  Text(viewModel.weather.data?.main?.temp?.toString() ?? "")
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        viewModel.weather.data?.name.toString().toTitleCase() ??
+                            "",
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      Image.network(
+                          "https://openweathermap.org/img/wn/${viewModel.weather.data?.weather?.first.icon}@2x.png"),
+                      Text(
+                        viewModel.weather.data?.weather?.first.description
+                                .toString()
+                                .toTitleCase() ??
+                            "",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        "${viewModel.weather.data?.main?.temp.toString()}\u00B0C" ??
+                            "",
+                        style: const TextStyle(
+                            fontSize: 48, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Humidity:"),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            "${viewModel.weather.data?.main?.humidity.toString() ?? ""}%",
+                            style: Theme.of(context)
+                                .typography
+                                .englishLike
+                                .titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Pressure:"),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            "${viewModel.weather.data?.main?.pressure.toString() ?? ""}%",
+                            style: Theme.of(context)
+                                .typography
+                                .englishLike
+                                .titleMedium,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
               ],
             ),
           );
