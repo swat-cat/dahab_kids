@@ -21,47 +21,24 @@ class WeatherScreen extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 24.0, right: 8.0),
-                        child: TextField(
-                          controller: cityController,
-                          decoration: const InputDecoration(
-                              hintText: 'Enter City Name',
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.0))),
-                          onSubmitted: (value) {
-                            // Trigger the API call when the user submits a city name
-                            context
-                                .read<WeatherViewmodel>()
-                                .fetchWeather(value);
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 24.0),
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            await context
-                                .read<WeatherViewmodel>()
-                                .fetchWeather(cityController.text);
-                            if (viewModel.weather.status != Status.success &&
-                                !viewModel.isLoading) {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text(viewModel.weather.message ??
-                                            "Error"),
-                                      ));
-                            }
-                          },
-                          child: Text("Get Weather")),
-                    )
-                  ],
+                SearchView(
+                  controller: cityController,
+                  callback: () async {
+                    await context
+                        .read<WeatherViewmodel>()
+                        .fetchWeather(cityController.text);
+                    if (viewModel.weather.status != Status.success &&
+                        !viewModel.isLoading) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title:
+                                    Text(viewModel.weather.message ?? "Error"),
+                              ));
+                    }
+                  },
+                  searchLabel: "Enter City Name",
+                  buttonLabel: "Get Weather",
                 ),
                 if (viewModel.isLoading)
                   const Padding(
@@ -145,6 +122,50 @@ class WeatherScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class SearchView extends StatelessWidget {
+  const SearchView(
+      {super.key,
+      required this.controller,
+      re,
+      required this.searchLabel,
+      required this.buttonLabel,
+      required this.callback});
+
+  final TextEditingController controller;
+  final String searchLabel;
+  final String buttonLabel;
+  final Function() callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24.0, right: 8.0, top: 8),
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                  label: Text(searchLabel),
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0))),
+              onSubmitted: (value) {
+                // Trigger the API call when the user submits a city name
+                callback();
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 24.0),
+          child: ElevatedButton(onPressed: callback, child: Text(buttonLabel)),
+        )
+      ],
     );
   }
 }

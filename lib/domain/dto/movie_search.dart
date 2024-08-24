@@ -1,48 +1,100 @@
-import 'package:dahab_kids/generated/json/base/json_field.dart';
-import 'package:dahab_kids/generated/json/movie_search_entity.g.dart';
-import 'dart:convert';
-export 'package:dahab_kids/generated/json/movie_search_entity.g.dart';
-
-@JsonSerializable()
 class MovieSearch {
-	@JSONField(name: "Search")
-	List<Movie>? search;
-	String? totalResults;
-	@JSONField(name: "Response")
-	String? response;
-
-	MovieSearch();
-
-	factory MovieSearch.fromJson(Map<String, dynamic> json) => $MovieSearchEntityFromJson(json);
-
-	Map<String, dynamic> toJson() => $MovieSearchEntityToJson(this);
-
-	@override
-	String toString() {
-		return jsonEncode(this);
-	}
+  MovieSearch({
+      List<Search>? search, 
+      String? totalResults, 
+      String? response,}){
+    _search = search;
+    _totalResults = totalResults;
+    _response = response;
 }
 
-@JsonSerializable()
-class Movie {
-	@JSONField(name: "Title")
-	String? title;
-	@JSONField(name: "Year")
-	String? year;
-	String? imdbID;
-	@JSONField(name: "Type")
-	String? type;
-	@JSONField(name: "Poster")
-	String? poster;
+  MovieSearch.fromJson(dynamic json) {
+    if (json['Search'] != null) {
+      _search = [];
+      json['Search'].forEach((v) {
+        _search?.add(Search.fromJson(v));
+      });
+    }
+    _totalResults = json['totalResults'];
+    _response = json['Response'];
+  }
+  List<Search>? _search;
+  String? _totalResults;
+  String? _response;
+MovieSearch copyWith({  List<Search>? search,
+  String? totalResults,
+  String? response,
+}) => MovieSearch(  search: search ?? _search,
+  totalResults: totalResults ?? _totalResults,
+  response: response ?? _response,
+);
+  List<Search>? get search => _search;
+  String? get totalResults => _totalResults;
+  String? get response => _response;
 
-	Movie();
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    if (_search != null) {
+      map['Search'] = _search?.map((v) => v.toJson()).toList();
+    }
+    map['totalResults'] = _totalResults;
+    map['Response'] = _response;
+    return map;
+  }
 
-	factory Movie.fromJson(Map<String, dynamic> json) => $MovieSearchSearchFromJson(json);
+}
 
-	Map<String, dynamic> toJson() => $MovieSearchSearchToJson(this);
+class Search {
+  Search({
+      String? title, 
+      String? year, 
+      String? imdbID, 
+      String? type, 
+      String? poster,}){
+    _title = title;
+    _year = year;
+    _imdbID = imdbID;
+    _type = type;
+    _poster = poster;
+}
 
-	@override
-	String toString() {
-		return jsonEncode(this);
-	}
+  Search.fromJson(dynamic json) {
+    _title = json['Title'];
+    _year = json['Year'];
+    _imdbID = json['imdbID'];
+    _type = json['Type'];
+    _poster = json['Poster'];
+  }
+  String? _title;
+  String? _year;
+  String? _imdbID;
+  String? _type;
+  String? _poster;
+Search copyWith({  String? title,
+  String? year,
+  String? imdbID,
+  String? type,
+  String? poster,
+}) => Search(  title: title ?? _title,
+  year: year ?? _year,
+  imdbID: imdbID ?? _imdbID,
+  type: type ?? _type,
+  poster: poster ?? _poster,
+);
+  String? get title => _title;
+  String? get year => _year;
+  String? get imdbID => _imdbID;
+  String? get type => _type;
+  String? get poster => _poster;
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['Title'] = _title;
+    map['Year'] = _year;
+    map['imdbID'] = _imdbID;
+    map['Type'] = _type;
+    map['Poster'] = _poster;
+    return map;
+  }
+
 }
