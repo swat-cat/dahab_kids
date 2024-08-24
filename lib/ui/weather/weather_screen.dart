@@ -29,8 +29,10 @@ class WeatherScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 24.0, right: 8.0),
                         child: TextField(
                           controller: cityController,
-                          decoration:
-                              InputDecoration(labelText: 'Enter City Name'),
+                          decoration: const InputDecoration(
+                              hintText: 'Enter City Name',
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 1.0))),
                           onSubmitted: (value) {
                             // Trigger the API call when the user submits a city name
                             context
@@ -104,7 +106,7 @@ class WeatherScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Humidity:"),
+                          const Text("Humidity:"),
                           const SizedBox(
                             width: 4,
                           ),
