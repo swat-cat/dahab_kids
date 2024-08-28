@@ -8,9 +8,14 @@ class MovieSearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<MovieSearchViewmodel>(builder: (context, viewModel, child) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [],
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Moivies"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [],
+          ),
         ),
       );
     });
