@@ -1,3 +1,6 @@
+import 'package:dahab_kids/data/repositories/movie_repository_impl.dart';
+import 'package:dahab_kids/ui/movie_search/movie_search_screen.dart';
+import 'package:dahab_kids/ui/movie_search/movie_search_viewmodel.dart';
 import 'package:dahab_kids/ui/weather/weather_screen.dart';
 import 'package:dahab_kids/ui/weather/weather_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +25,7 @@ class HomeRouter extends StatelessWidget {
         ),
         body: SizedBox.expand(
             child: Padding(
-          padding: EdgeInsets.all(32),
+          padding: const EdgeInsets.all(32),
           child: Center(
             child: Row(
               children: [
@@ -45,9 +48,22 @@ class HomeRouter extends StatelessWidget {
                   ),
                 )),
                 const SizedBox(width: 16),
-                const Expanded(
-                    child: Card(
-                  child: SizedBox.expand(child: Center(child: Text("Movies"))),
+                Expanded(
+                    child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider(
+                                  create: (_) => MovieSearchViewmodel(
+                                      MovieRepositoryImpl(RestClient(""))),
+                                  child: const MovieSearchScreen(),
+                                )));
+                  },
+                  child: const Card(
+                    child:
+                        SizedBox.expand(child: Center(child: Text("Movies"))),
+                  ),
                 )),
               ],
             ),
