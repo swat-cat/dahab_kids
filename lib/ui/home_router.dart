@@ -30,39 +30,45 @@ class HomeRouter extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                    child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                                  create: (_) => WeatherViewmodel(
-                                      WeatherRepositoryImpl(RestClient(
-                                          "https://api.openweathermap.org/data/2.5"))),
-                                  child: WeatherScreen(),
-                                )));
-                  },
-                  child: const Card(
-                    child:
-                        SizedBox.expand(child: Center(child: Text("Weather"))),
+                    child: AspectRatio(
+                  aspectRatio: 1,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (_) => WeatherViewmodel(
+                                        WeatherRepositoryImpl(RestClient(
+                                            "https://api.openweathermap.org/data/2.5"))),
+                                    child: WeatherScreen(),
+                                  )));
+                    },
+                    child: const Card(
+                      child: SizedBox.expand(
+                          child: Center(child: Text("Weather"))),
+                    ),
                   ),
                 )),
                 const SizedBox(width: 16),
                 Expanded(
-                    child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider(
-                                  create: (_) => MovieSearchViewmodel(
-                                      MovieRepositoryImpl(RestClient(""))),
-                                  child: const MovieSearchScreen(),
-                                )));
-                  },
-                  child: const Card(
-                    child:
-                        SizedBox.expand(child: Center(child: Text("Movies"))),
+                    child: AspectRatio(
+                  aspectRatio: 1,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (_) => MovieSearchViewmodel(
+                                        MovieRepositoryImpl(RestClient(""))),
+                                    child: const MovieSearchScreen(),
+                                  )));
+                    },
+                    child: const Card(
+                      child:
+                          SizedBox.expand(child: Center(child: Text("Movies"))),
+                    ),
                   ),
                 )),
               ],

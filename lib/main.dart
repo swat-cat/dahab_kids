@@ -1,10 +1,6 @@
-import 'package:dahab_kids/data/repositories/weather_repository_impl.dart';
-import 'package:dahab_kids/data/rest_client.dart';
 import 'package:dahab_kids/ui/home_router.dart';
-import 'package:dahab_kids/ui/weather/weather_screen.dart';
-import 'package:dahab_kids/ui/weather/weather_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
@@ -17,6 +13,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return ScreenTypeLayout(
+      mobile: buildMaterialApp(),
+      tablet: buildMaterialApp(),
+      desktop: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.2),
+        child: buildMaterialApp(),
+      ),
+    );
+  }
+
+  MaterialApp buildMaterialApp() {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -25,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: ResponsiveBreakpoints.builder(
-        child: HomeRouter(),
+        child: const HomeRouter(),
         breakpoints: [
           const Breakpoint(start: 0, end: 450, name: MOBILE),
           const Breakpoint(start: 451, end: 800, name: TABLET),
