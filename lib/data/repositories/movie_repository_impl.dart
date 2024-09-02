@@ -11,9 +11,11 @@ class MovieRepositoryImpl extends MovieRepository{
   MovieRepositoryImpl(this.restClient);
 
   @override
-  Future<Resource<MovieDetails>> getMovieDetails(String id) {
-    // TODO: implement getMovieDetails
-    throw UnimplementedError();
+  Future<Resource<MovieDetails>> getMovieDetails(String id) async {
+    Resource<MovieDetails> resource = await restClient.get<MovieDetails>(
+        "https://www.omdbapi.com/", MovieDetails.fromJson,
+        queryParams: {"i": id, "apikey": "33d3ea25"});
+    return resource;
   }
 
   @override

@@ -62,7 +62,7 @@ class HomeRouter extends StatelessWidget {
                               builder: (context) => ChangeNotifierProvider(
                                     create: (_) => MovieSearchViewmodel(
                                         MovieRepositoryImpl(RestClient(""))),
-                                    child: const MovieSearchScreen(),
+                                    child: MovieSearchScreen(),
                                   )));
                     },
                     child: const Card(
